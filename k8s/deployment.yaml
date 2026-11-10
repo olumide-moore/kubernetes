@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-k8s
+spec:
+  replicas: 2
+  selector:
+    matchLabels: #This tells the Deployment: “the pods I manage are the ones with the label app: hello-k8s
+      app: hello-k8s #It uses that to count them. You asked for 2 replicas, so if it finds 1, it creates another. If it finds 3, it deletes one.
+  template:
+    metadata:
+      labels:
+        app: hello-k8s #Every pod gets the label app: hello-k8s stuck on it, like a name tag.
+    spec:
+      containers:
+        - name: hello-k8s
+          image: hello-k8s:1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
