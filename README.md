@@ -59,4 +59,19 @@
 `kind load docker-image hello-k8s:1.1 --name practice`
 `helm upgrade hello hello-chart --set image.tag=1.1`
 `kubectl port-forward svc/hello 8081:80`
+
+The env will not change after the second upgrade, and only updates after kubectl rollout restart
+Why: envFrom injects the ConfigMap values as environment variables when the container starts. Updating the ConfigMap doesn’t restart the pods, so they keep the old values.
 If you wish to restart pods for changes `kubectl rollout restart deployment hello`
+
+### See the values the release is using
+`helm get values hello` only the overrides
+`helm get values hello --all` overrides plus default
+`helm upgrade hello hello-chart --reset-values` reset values to that in values.yaml
+
+### check an environment variable in the pod
+`kubectl exec deploy/hello -- env | grep API_KEY`
+`kubectl get secret hello-secret -o jsonpath='{.data.API_KEY}' | base64 -d`
+
+Ingress lets you reach the app on a hostname through port 80, instead of port-forwarding. It needs two parts: a controller (the thing that actually routes traffic) and an Ingress resource (the routing rules).
+

@@ -9,6 +9,8 @@ spec:
       app: hello-k8s #It uses that to count them. You asked for 2 replicas, so if it finds 1, it creates another. If it finds 3, it deletes one.
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }} #add a checksum of the ConfigMap so when the config changes, the annotation changes
       labels:
         app: hello-k8s #Every pod gets the label app: hello-k8s stuck on it, like a name tag.
     spec:
@@ -21,3 +23,5 @@ spec:
           envFrom: 
             - configMapRef:
                 name: {{ .Release.Name }}-config
+            - secretRef:
+                name: {{ .Release.Name }}-secret
