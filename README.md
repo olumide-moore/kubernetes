@@ -75,3 +75,9 @@ If you wish to restart pods for changes `kubectl rollout restart deployment hell
 
 Ingress lets you reach the app on a hostname through port 80, instead of port-forwarding. It needs two parts: a controller (the thing that actually routes traffic) and an Ingress resource (the routing rules).
 
+### Install ingress-nginx controller
+`kubectl apply -f https://kind.sigs.k8s.io/examples/ingress/deploy-ingress-nginx.yaml`
+`kubectl wait --namespace ingress-nginx --for=condition=ready pod --selector=app.kubernetes.io/component=controller --timeout=120s` pause terminal until ingresss controller pod is ready
+`kubectl upgrade hello hello-chart` run after you have ingress.yaml in templates
+`kubectl get ingress`
+`kubectl get pods -n ingress-nginx -o wide`
