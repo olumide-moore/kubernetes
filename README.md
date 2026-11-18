@@ -81,3 +81,7 @@ Ingress lets you reach the app on a hostname through port 80, instead of port-fo
 `kubectl upgrade hello hello-chart` run after you have ingress.yaml in templates
 `kubectl get ingress`
 `kubectl get pods -n ingress-nginx -o wide`
+`kubectl describe ingress hello`
+`kubectl get nodes --show-labels | findstr ingress-ready`
+
+curl → port 80 on the kind control-plane node → nginx ingress controller → Ingress rule → Service → one of 2 pods running Spring Boot app.
