@@ -23,3 +23,10 @@ greeting: "Hello from Helm!"
 apiKey: "dummy-key"
 ingress:
   host: hello.localhost
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    memory: 512Mi

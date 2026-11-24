@@ -4,3 +4,6 @@ metadata:
   name: {{ .Release.Name }}-config
 data: 
   GREETING: {{ .Values.greeting | quote }}
+  application.properties: |
+    management.endpoint.health.probes.enabled=true
+    management.endpoints.web.exposure.include=health

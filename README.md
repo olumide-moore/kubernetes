@@ -79,9 +79,27 @@ Ingress lets you reach the app on a hostname through port 80, instead of port-fo
 `kubectl apply -f https://kind.sigs.k8s.io/examples/ingress/deploy-ingress-nginx.yaml`
 `kubectl wait --namespace ingress-nginx --for=condition=ready pod --selector=app.kubernetes.io/component=controller --timeout=120s` pause terminal until ingresss controller pod is ready
 `kubectl upgrade hello hello-chart` run after you have ingress.yaml in templates
+Apply patch to controller with kubectl 
+
+`kubectl patch deployment ingress-nginx-controller -n ingress-nginx --patch-file ingress-patch.yaml`
+alternative ot patch.yaml-> 
+`helm upgrade ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --set controller.nodeSelector."ingress-ready"=true`
 `kubectl get ingress`
 `kubectl get pods -n ingress-nginx -o wide`
 `kubectl describe ingress hello`
 `kubectl get nodes --show-labels | findstr ingress-ready`
 
 curl → port 80 on the kind control-plane node → nginx ingress controller → Ingress rule → Service → one of 2 pods running Spring Boot app.
+
+# Useful commands 
+`kubectl get endpoints`
+`kubectl get pods -w`
+`kubectl describe pod <podname>`
+
+A node has a fixed amount of CPU and memory, and many pods share it. Without rules, one greedy pod can starve the others. Requests and limits are how you tell Kubernetes about your app's needs
+
+
+To run `kubectl top pods`, run
+
+```kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml``
+```kubectl patch -n kube-system deployment metrics-server --type=json -p '[{"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--kubelet-insecure-tls"}]'```
