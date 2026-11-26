@@ -103,3 +103,10 @@ To run `kubectl top pods`, run
 
 ```kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml``
 ```kubectl patch -n kube-system deployment metrics-server --type=json -p '[{"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--kubelet-insecure-tls"}]'```
+
+### Useful docker commands
+`docker run --rm -it --entrypoint sh app` check a container files/directories
+`docker compose run --rm --entrypoint sh app` similar but for docker compose
+`kubectl exec -it deployment/eft -- ls -la` 
+`docker ps -s` check a containers writable layer uses
+`docker exec app env | grep DB_HOST` check a containers environment variables
